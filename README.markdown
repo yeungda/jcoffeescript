@@ -1,8 +1,6 @@
 # JCoffeeScript
 
-JCoffeeScript is a java library that compiles CoffeeScript 0.6.1.
-
-JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
+JCoffeeScript is a java library that compiles CoffeeScript 0.6.1.  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
 
 ## Usage
 from the command prompt:
@@ -45,6 +43,7 @@ from jruby:
     compiler = CoffeeScriptCompiler.new
     compiler.compile('a:1')
 
+## Finally
 Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
 
 Home Page: http://yeungda.github.com/jcoffeescript
