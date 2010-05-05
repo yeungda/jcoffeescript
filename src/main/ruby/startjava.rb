@@ -1,31 +1,31 @@
 if "java" == RUBY_PLATFORM then
+    # use jcoffeescript implementation
     require 'java'
-    class CoffeeScriptRunner
+    class CoffeeScriptCompiler
 
         def initialize
-          @main = org.mozilla.javascript.tools.shell.Main
-          @context = org.mozilla.javascript.Context.enter()
-          @context.setOptimizationLevel(-1)
-          @globals = @main.loadScriptFromSource(@context, "NARWHAL_HOME='/Users/dyeung/Projects/coffeescript-rhino/narwhal'", "<cmd>", 1, nil)
-          source = File.read("/Users/dyeung/Projects/coffeescript-rhino/narwhal/engines/rhino/bootstrap.js")
-          @script = @main.loadScriptFromSource(@context, source, "<cmd>", 1, nil)
+            @compiler = org.jcoffeescript.JCoffeeScriptCompiler.new
         end
 
-        def compile(file)
-          theGlobal = @context.initStandardObjects();
-          objects = ["/Users/dyeung/Projects/coffeescript-rhino/narwhal/engines/rhino/bin/narwhal-rhino", "-o", "/Users/dyeung/Projects/coffeescript-rhino/coffee-script/lib/test.js", file]
-          scriptableObject = @context.initStandardObjects(theGlobal);
-          argumentsArray = @context.newArray(theGlobal, objects.to_java);
-          theGlobal.defineProperty("arguments", argumentsArray, 2);
-
-          @main.evaluateScript(@globals, @context, scriptableObject)
-          @main.evaluateScript(@script, @context, scriptableObject)
-          scriptableObject.get("js")
+        def compile(source)
+            @compiler.compile(source)
         end
     end
-    runner = CoffeeScriptRunner.new
-    puts(runner.compile("/Users/dyeung/Projects/coffeescript-rhino/coffee-script/lib/hello.coffee"))
-    puts(runner.compile("/Users/dyeung/Projects/coffeescript-rhino/coffee-script/lib/hello.coffee"))
+else
+    # use shell out to coffee implementation
+    require 'open3'
+    class CoffeeScriptCompiler
+        def compile(source)
+            return Open3.popen3('coffee --eval --print') do |stdin, stdout, stderr|
+              stdin.puts source
+              stdin.close
+              stdout.read
+            end
+        end
+    end
 end
+
+compiler = CoffeeScriptCompiler.new
+puts(compiler.compile('a:1'))
 
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <target name="jar" depends="test">
+        <mkdir dir="${basedir}/target/dist"/>
+        <pathtofileset name="jars" pathrefid="compile.classpath" dir="${basedir}/lib"/>
+        
+        <jar destfile="${basedir}/target/dist/${artifact.name}.jar">
+            <manifest><attribute name="Main-Class" value="org.jcoffeescript.Main"/></manifest>
+            <zipgroupfileset refid="jars"/>
+            <metainf dir="${basedir}/.." includes="LICENSE,NOTICE"/>
+            <zipfileset dir="${basedir}/target/classes/main"/>            
+        </jar>
+    </target>
+</project>

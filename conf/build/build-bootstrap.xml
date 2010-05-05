@@ -1,0 +1,7 @@
+<project>
+
+    <target name="bootstrap">
+        <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/conf/build/bootstrap/ant-contrib-1.0b3.jar"/>
+    </target>
+
+</project>

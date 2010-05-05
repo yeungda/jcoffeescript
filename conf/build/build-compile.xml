@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+    <target name="dependencies">
+        <fail message="[dependencies] target should be defined outside the scope of build-compile"/>
+    </target>
+
+    <target name="compile" depends="dependencies, compile-all" description="compile all source folders"/>
+
+    <target name="compile-all">
+        <compile-folder folder="main" classpathref="compile.classpath"/>
+        <compile-folder folder="standalone" classpathref="test.classpath"/>
+        <compile-folder folder="unit-tests" classpathref="test.classpath"/>
+        <compile-folder folder="integration-tests" classpathref="test.classpath"/>
+    </target>
+
+    <macrodef name="compile-folder">
+        <attribute name="folder" />
+        <attribute name="classpathref" />
+        <sequential>
+            <if>
+                <available file="${basedir}/src/@{folder}/java" type="dir"/>
+                <then>
+                    <mkdir dir="${basedir}/target/classes/@{folder}"/>
+                    <javac srcdir="${basedir}/src/@{folder}/java" destdir="${basedir}/target/classes/@{folder}" source="1.5" target="1.5" debug="true">
+                        <classpath>
+                            <path refid="@{classpathref}"/>
+                            <pathelement location="${basedir}/target/classes/main" />
+                        </classpath>
+                    </javac>
+                    <copy todir="${basedir}/target/classes/@{folder}">
+                        <fileset dir="${basedir}/src/@{folder}/java" excludes="**/*.java"/>
+                    </copy>
+                </then>
+            </if>
+        	<if>
+                <available file="${basedir}/src/@{folder}/resources" type="dir"/>
+                <then>
+                    <mkdir dir="${basedir}/target/classes/@{folder}" />
+                    <copy todir="${basedir}/target/classes/@{folder}">
+                        <fileset dir="${basedir}/src/@{folder}/resources" />
+                    </copy>
+                </then>
+            </if>
+        </sequential>
+    </macrodef>
+
+</project>

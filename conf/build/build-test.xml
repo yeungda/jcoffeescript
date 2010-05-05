@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+    <target name="compile">
+        <fail message="[compile] target should be defined outside the scope of build-test"/>
+    </target>
+
+    <target name="test" depends="compile">
+        <sequential>
+            <run-test folder="unit-tests" />
+            <run-test folder="integration-tests" />
+            <fail if="tests-failed" message="tests failed" />
+        </sequential>
+    </target>
+
+    <macrodef name="run-test">
+        <attribute name="folder" />
+        <sequential>
+            <if>
+                <available file="${basedir}/src/@{folder}/java" type="dir"/>
+                <then>
+                    <delete dir="${basedir}/target/test-reports/@{folder}" includeEmptyDirs="true" failonerror="true" />
+                    <mkdir dir="${basedir}/target/test-reports/@{folder}" />
+                    <mkdir dir="${basedir}/target/test-reports/@{folder}/xml" />
+                    <mkdir dir="${basedir}/target/test-reports/@{folder}/html" />
+                    <junit printsummary="yes" fork="yes" forkmode="once" failureproperty="tests-failed">
+                        <classpath>
+                            <path refid="test.classpath" />
+                            <pathelement location="${basedir}/target/classes/main" />
+                            <pathelement location="${basedir}/target/classes/@{folder}" />
+                        </classpath>
+                        <formatter type="xml" />
+                        <batchtest fork="yes" todir="${basedir}/target/test-reports/@{folder}/xml">
+                            <fileset dir="${basedir}/target/classes/@{folder}" includes="**/*Test.class" />
+                        </batchtest>
+                    </junit>
+                    <junitreport todir="${basedir}/target/test-reports/@{folder}/html">
+                        <fileset dir="${basedir}/target/test-reports/@{folder}/xml">
+                            <include name="TEST-*.xml"/>
+                        </fileset>
+                        <report format="frames" todir="${basedir}/target/test-reports/@{folder}/html"/>
+                    </junitreport>
+                </then>
+            </if>
+        </sequential>
+    </macrodef>
+
+</project>
