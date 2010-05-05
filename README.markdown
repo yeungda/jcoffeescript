@@ -1,6 +1,6 @@
 # JCoffeeScript
 
-JCoffeeScript is a java library that compiles CoffeeScript.
+JCoffeeScript is a java library that compiles CoffeeScript 0.6.1.
 
 JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
 
