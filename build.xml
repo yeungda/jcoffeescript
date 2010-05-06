@@ -44,5 +44,10 @@
 
     <target name="functional-test" depends="jar">
         <java inputstring="a:1" jar="${basedir}/target/dist/${artifact.name}.jar" failonerror="true" fork="true"/>
+        <java classname="org.jruby.Main" failonerror="true" fork="true">
+            <classpath refid="compile.classpath"/>
+            <classpath path="${basedir}/target/dist/${artifact.name}.jar"/>
+            <arg value="a:1"/>
+            </java>
     </target>
 </project>
