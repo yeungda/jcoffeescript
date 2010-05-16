@@ -20,7 +20,7 @@
 
     <target name="build" depends="bootstrap, clean, functional-test"/>
 
-    <property name="artifact.name" value="jcoffeescript-0.6.1"/>
+    <property name="artifact.name" value="jcoffeescript-0.6.2"/>
     <import file="${basedir}/conf/build/build-bootstrap.xml"/>
     <import file="${basedir}/conf/build/build-clean.xml"/>
     <import file="${basedir}/conf/build/build-compile.xml"/>
@@ -51,11 +51,12 @@
     <target name="functional-test" depends="jar">
         <java inputstring="a:1" jar="${basedir}/target/dist/${artifact.name}.jar" failonerror="true" fork="true"/>
 
-        <java classname="org.jruby.Main" failonerror="true" fork="true">
+        <java  outputproperty="jruby.output" classname="org.jruby.Main" failonerror="true" fork="true">
             <classpath refid="runtime.classpath"/>
             <classpath path="${basedir}/target/dist/${artifact.name}.jar"/>
             <arg value="${basedir}/src/main/ruby/compile.rb"/>
             <arg value="a:1"/>
-            </java>
+        </java>
+        <echo>val=${jruby.output}</echo>
     </target>
 </project>
