@@ -46,4 +46,6 @@ from jruby:
 ## Finally
 Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
 
+Thanks to Raphael Speyer for helping with the design.
+
 Home Page: http://yeungda.github.com/jcoffeescript
