@@ -16,27 +16,33 @@
 
 package org.jcoffeescript;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
+import java.nio.CharBuffer;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Main().execute(System.out, System.in);
     }
 
-    public void execute(PrintStream out, InputStream in) {
-        final InputStreamReader streamReader = new InputStreamReader(in);
-        final StringBuilder builder = new StringBuilder();
+    public void execute(PrintStream out, InputStream in) throws IOException {
+        final int BUFFER_OFFSET = 0;
+        final int BUFFER_SIZE = 262144;
+
+        InputStreamReader streamReader = new InputStreamReader(in);
         try {
-            while (streamReader.ready()) {
-                builder.append((char) streamReader.read());
+            StringBuilder builder = new StringBuilder(BUFFER_SIZE);
+            char[] buffer = new char[BUFFER_SIZE];
+            int numCharsRead = streamReader.read(
+                    buffer, BUFFER_OFFSET, BUFFER_SIZE);
+            while (numCharsRead >= 0) {
+                builder.append(buffer, BUFFER_OFFSET, numCharsRead);
+                numCharsRead = streamReader.read(
+                        buffer, BUFFER_OFFSET, BUFFER_SIZE);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            out.print(new JCoffeeScriptCompiler().compile(builder.toString()));
+        } finally {
+            streamReader.close();
         }
-        out.print(new JCoffeeScriptCompiler().compile(builder.toString()));
     }
 }
