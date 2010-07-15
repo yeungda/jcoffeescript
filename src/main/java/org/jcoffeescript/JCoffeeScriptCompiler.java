@@ -17,6 +17,7 @@
 package org.jcoffeescript;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.Scriptable;
 
 import java.io.IOException;
@@ -57,14 +58,18 @@ public class JCoffeeScriptCompiler {
         }
     }
 
-    public String compile (String coffeeScriptSource) {
+    public String compile (String coffeeScriptSource) throws JCoffeeScriptCompileException {
         Context context = Context.enter();
         try {
             Scriptable compileScope = context.newObject(globalScope);
             compileScope.setParentScope(globalScope);
             compileScope.put("coffeeScriptSource", compileScope, coffeeScriptSource);
-            return (String)context.evaluateString(compileScope, "CoffeeScript.compile(coffeeScriptSource);",
-                    "JCoffeeScriptCompiler", 0, null);
+            try {
+                return (String)context.evaluateString(compileScope, "CoffeeScript.compile(coffeeScriptSource);",
+                        "JCoffeeScriptCompiler", 0, null);
+            } catch (JavaScriptException e) {
+                throw new JCoffeeScriptCompileException(e);
+            }
         } finally {
             Context.exit();
         }

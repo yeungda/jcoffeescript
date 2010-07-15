@@ -16,8 +16,10 @@
 
 package org.jcoffeescript;
 
-import java.io.*;
-import java.nio.CharBuffer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 
 public class Main {
 
@@ -41,6 +43,9 @@ public class Main {
                         buffer, BUFFER_OFFSET, BUFFER_SIZE);
             }
             out.print(new JCoffeeScriptCompiler().compile(builder.toString()));
+        } catch (JCoffeeScriptCompileException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
         } finally {
             streamReader.close();
         }
