@@ -48,4 +48,6 @@ Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
 
 Thanks to Raphael Speyer for helping with the design.
 
+Thanks to djcsdy for putting a lot of work into the code.
+
 Home Page: http://yeungda.github.com/jcoffeescript
