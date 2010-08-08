@@ -4,14 +4,14 @@ JCoffeeScript is a java library that compiles CoffeeScript 0.9.0.  JCoffeeScript
 
 ## Usage
 from the command prompt:
-    prompt> echo "a: 1" | java -jar jcoffeescript-0.9.0.jar
+    prompt> echo "a = 1" | java -jar jcoffeescript-0.9.0.jar
     (function(){
       var a;
       a = 1;
     })();
 
 from java:
-    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a:1");
+    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
 
 from jruby:
     if "java" == RUBY_PLATFORM then
@@ -41,7 +41,7 @@ from jruby:
         end
     end
     compiler = CoffeeScriptCompiler.new
-    compiler.compile('a:1')
+    compiler.compile('a = 1')
 
 ## Finally
 Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
