@@ -29,7 +29,7 @@ import static org.junit.Assert.assertThat;
 public class MainTest {
     @Test
     public void shouldCompileScriptsPipedToInputStreamAndPrintToOutputStream() throws IOException {
-        assertThat(piping("a:1"), Matchers.containsString("a = 1"));
+        assertThat(piping("a = 1"), Matchers.containsString("a = 1"));
     }
 
     private String piping(String input) throws IOException {

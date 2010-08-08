@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 public class CoffeeScriptCompilerTest {
     @Test
     public void shouldCompile() throws JCoffeeScriptCompileException {
-        assertThat(compiling("a: 1"), Matchers.containsString("a = 1"));
+        assertThat(compiling("a = 1"), Matchers.containsString("a = 1"));
     }
 
     private String compiling(String coffeeScriptSource) throws JCoffeeScriptCompileException {
