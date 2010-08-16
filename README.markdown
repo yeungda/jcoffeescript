@@ -1,10 +1,10 @@
 # JCoffeeScript
 
-JCoffeeScript is a java library that compiles CoffeeScript 0.9.0.  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
+JCoffeeScript is a java library that compiles CoffeeScript 0.9.1.  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
 
 ## Usage
 from the command prompt:
-    prompt> echo "a = 1" | java -jar jcoffeescript-0.9.0.jar
+    prompt> echo "a = 1" | java -jar jcoffeescript-0.9.1.jar
     (function(){
       var a;
       a = 1;
