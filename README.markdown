@@ -4,7 +4,7 @@ JCoffeeScript is a java library that compiles CoffeeScript 0.9.1.  JCoffeeScript
 
 ## Usage
 from the command prompt:
-    prompt> echo "a = 1" | java -jar jcoffeescript-0.9.1.jar
+    prompt> echo "a = 1" | java -jar jcoffeescript.jar
     (function(){
       var a;
       a = 1;
