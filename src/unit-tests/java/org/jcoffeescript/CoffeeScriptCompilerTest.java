@@ -16,18 +16,35 @@
 
 package org.jcoffeescript;
 
-import org.hamcrest.Matchers;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class CoffeeScriptCompilerTest {
     @Test
-    public void shouldCompile() throws JCoffeeScriptCompileException {
-        assertThat(compiling("a = 1"), Matchers.containsString("a = 1"));
+    public void shouldCompileWithDefaultOptions() throws JCoffeeScriptCompileException {
+        assertThat(compiling("a = 1"),
+                allOf(
+                        containsString("a = 1"),
+                        containsSafetyWrapper()
+                )
+        );
     }
 
-    private String compiling(String coffeeScriptSource) throws JCoffeeScriptCompileException {
-        return new JCoffeeScriptCompiler().compile(coffeeScriptSource);
+    @Test
+    public void shouldCompileWithoutSafetyWrapper() throws JCoffeeScriptCompileException {
+        assertThat(compiling("a = 1", Option.NO_WRAP), not(containsSafetyWrapper()));
+    }
+
+    private Matcher<String> containsSafetyWrapper() {
+        return allOf(startsWith("(function() {\n"), endsWith("\n})();\n"));
+    }
+
+    private String compiling(String coffeeScriptSource, Option... options) throws JCoffeeScriptCompileException {
+        return new JCoffeeScriptCompiler(Arrays.asList(options)).compile(coffeeScriptSource);
     }
 }

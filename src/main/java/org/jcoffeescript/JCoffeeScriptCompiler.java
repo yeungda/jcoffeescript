@@ -25,12 +25,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class JCoffeeScriptCompiler {
 
-    private Scriptable globalScope;
+    private final Scriptable globalScope;
+    private final Options options;
 
     public JCoffeeScriptCompiler() {
+        this(Collections.EMPTY_LIST);
+    }
+
+    public JCoffeeScriptCompiler(Collection<Option> options) {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("org/jcoffeescript/coffee-script.js");
         try {
@@ -56,6 +65,8 @@ public class JCoffeeScriptCompiler {
         } catch (IOException e) {
             throw new Error(e); // This should never happen
         }
+
+        this.options = new Options(options);
     }
 
     public String compile (String coffeeScriptSource) throws JCoffeeScriptCompileException {
@@ -65,7 +76,7 @@ public class JCoffeeScriptCompiler {
             compileScope.setParentScope(globalScope);
             compileScope.put("coffeeScriptSource", compileScope, coffeeScriptSource);
             try {
-                return (String)context.evaluateString(compileScope, "CoffeeScript.compile(coffeeScriptSource);",
+                return (String)context.evaluateString(compileScope, String.format("CoffeeScript.compile(coffeeScriptSource, %s);", options.toJavaScript()),
                         "JCoffeeScriptCompiler", 0, null);
             } catch (JavaScriptException e) {
                 throw new JCoffeeScriptCompileException(e);
@@ -75,4 +86,16 @@ public class JCoffeeScriptCompiler {
         }
     }
 
+
+    private static class Options {
+        private final String javaScriptOptions;
+
+        public Options(Collection<Option> options) {
+            javaScriptOptions = String.format("{noWrap: %b}", options.contains(Option.NO_WRAP));
+        }
+
+        public String toJavaScript() {
+            return javaScriptOptions;
+        }
+    }
 }
