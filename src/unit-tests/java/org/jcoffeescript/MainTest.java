@@ -16,26 +16,46 @@
 
 package org.jcoffeescript;
 
-import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
-
+import static org.hamcrest.CoreMatchers.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.StringContains.containsString;
 
 public class MainTest {
-    @Test
-    public void shouldCompileScriptsPipedToInputStreamAndPrintToOutputStream() throws IOException {
-        assertThat(piping("a = 1"), Matchers.containsString("a = 1"));
+
+    String[] argsArray = new String[1];
+
+    @Before
+    public void setUp() {
+        argsArray[0] = "";
     }
 
-    private String piping(String input) throws IOException {
+    @Test
+    public void shouldCompileScriptsPipedToInputStreamAndPrintToOutputStream() throws IOException {
+        assertThat(piping("a = 1", argsArray), containsString("a = 1"));
+    }
+
+    @Test
+    public void ShouldWrap() throws IOException {
+        assertThat(piping("a = 1", argsArray), containsString("(function() {"));
+    }
+
+    @Test
+    public void ShouldNotWrap() throws IOException {
+        argsArray[0] = "NO_WRAP";
+        assertThat(piping("a = 1", argsArray), not(containsString("(function() {")));
+    }
+
+    private String piping(String input, String[] args) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         final PrintStream printStream = new PrintStream(byteArrayOutputStream);
-        new Main().execute(printStream, new ByteArrayInputStream(input.getBytes()));
+        new Main().execute(args, printStream, new ByteArrayInputStream(input.getBytes()));
         printStream.close();
         return byteArrayOutputStream.toString();
     }

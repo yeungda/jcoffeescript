@@ -20,14 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.Collection;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        new Main().execute(System.out, System.in);
+        new Main().execute(args, System.out, System.in);
     }
 
-    public void execute(PrintStream out, InputStream in) throws IOException {
+    public void execute(String[] args, PrintStream out, InputStream in) throws IOException {
         final int BUFFER_OFFSET = 0;
         final int BUFFER_SIZE = 262144;
 
@@ -35,14 +37,21 @@ public class Main {
         try {
             StringBuilder builder = new StringBuilder(BUFFER_SIZE);
             char[] buffer = new char[BUFFER_SIZE];
-            int numCharsRead = streamReader.read(
-                    buffer, BUFFER_OFFSET, BUFFER_SIZE);
+            int numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
             while (numCharsRead >= 0) {
                 builder.append(buffer, BUFFER_OFFSET, numCharsRead);
-                numCharsRead = streamReader.read(
-                        buffer, BUFFER_OFFSET, BUFFER_SIZE);
+                numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
             }
-            out.print(new JCoffeeScriptCompiler().compile(builder.toString()));
+            
+            Collection<Option> options = new LinkedList<Option>();
+
+            if (args.length == 1 && args[0].equals("NO_WRAP")) {
+                options.add(Option.NO_WRAP);
+            }
+
+            JCoffeeScriptCompiler compiler = new JCoffeeScriptCompiler(options);
+            out.print(compiler.compile(builder.toString()));
+            
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
             System.exit(1);

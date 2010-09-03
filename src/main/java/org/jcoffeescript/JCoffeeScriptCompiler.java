@@ -25,19 +25,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class JCoffeeScriptCompiler {
 
     private final Scriptable globalScope;
     private final Options options;
-
-    public JCoffeeScriptCompiler() {
-        this(Collections.EMPTY_LIST);
-    }
 
     public JCoffeeScriptCompiler(Collection<Option> options) {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -87,7 +80,7 @@ public class JCoffeeScriptCompiler {
     }
 
 
-    private static class Options {
+    public static class Options {
         private final String javaScriptOptions;
 
         public Options(Collection<Option> options) {
