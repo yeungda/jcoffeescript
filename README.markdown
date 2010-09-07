@@ -10,6 +10,9 @@ from the command prompt:
       a = 1;
     })();
 
+command prompt options:
+    --no-wrap   Compile the JavaScript without the top-level function safety wrapper.
+
 from java:
     String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
 
@@ -49,5 +52,7 @@ Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
 Thanks to Raphael Speyer for helping with the design.
 
 Thanks to Daniel Cassidy for putting a lot of work into the code.
+
+Thanks to PandaWood for helping with the code.
 
 Home Page: http://yeungda.github.com/jcoffeescript

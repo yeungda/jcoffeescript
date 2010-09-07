@@ -20,42 +20,52 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.LinkedList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class Main {
-	private static final int BUFFER_SIZE = 262144;
-	private static final int BUFFER_OFFSET = 0;
+    private static final int BUFFER_SIZE = 262144;
+    private static final int BUFFER_OFFSET = 0;
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new Main().execute(args, System.out, System.in);
     }
 
-    public void execute(String[] args, PrintStream out, InputStream in) throws IOException {
-	    
-        InputStreamReader streamReader = new InputStreamReader(in);
+    public void execute(String[] args, PrintStream out, InputStream in) {
+        final Collection<Option> options = readOptionsFrom(args);
         try {
-            StringBuilder builder = new StringBuilder(BUFFER_SIZE);
-            char[] buffer = new char[BUFFER_SIZE];
-            int numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
-            while (numCharsRead >= 0) {
-                builder.append(buffer, BUFFER_OFFSET, numCharsRead);
-                numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
-            }
-            
-            Collection<Option> options = new LinkedList<Option>();
-
-            if (args.length == 1 && args[0].equals("--no-wrap")) {
-                options.add(Option.NO_WRAP);
-            }
-
-            JCoffeeScriptCompiler compiler = new JCoffeeScriptCompiler(options);
-            out.print(compiler.compile(builder.toString()));
-            
+            out.print(new JCoffeeScriptCompiler(options).compile(readSourceFrom(in)));
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
-        } finally {
-            streamReader.close();
         }
+    }
+
+    private String readSourceFrom(InputStream inputStream) {
+        final InputStreamReader streamReader = new InputStreamReader(inputStream);
+        try {
+            try {
+                StringBuilder builder = new StringBuilder(BUFFER_SIZE);
+                char[] buffer = new char[BUFFER_SIZE];
+                int numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
+                while (numCharsRead >= 0) {
+                    builder.append(buffer, BUFFER_OFFSET, numCharsRead);
+                    numCharsRead = streamReader.read(buffer, BUFFER_OFFSET, BUFFER_SIZE);
+                }
+                return builder.toString();
+            } finally {
+                streamReader.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Collection<Option> readOptionsFrom(String[] args) {
+        final Collection<Option> options = new LinkedList<Option>();
+
+        if (args.length == 1 && args[0].equals("--no-wrap")) {
+            options.add(Option.NO_WRAP);
+        }
+        return options;
     }
 }

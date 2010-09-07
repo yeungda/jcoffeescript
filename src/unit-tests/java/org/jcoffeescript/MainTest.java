@@ -16,7 +16,6 @@
 
 package org.jcoffeescript;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import java.io.ByteArrayInputStream;
@@ -29,30 +28,22 @@ import static org.junit.internal.matchers.StringContains.containsString;
 
 public class MainTest {
 
-    static String[] argsArray = new String[1];
-
-    @Before
-    public void setUp() {
-        argsArray[0] = "";
+    @Test
+    public void shouldCompileScriptPipedToInputStreamAndPrintToOutputStream() throws IOException {
+        assertThat(compilingByPiping("a = 1"), containsString("a = 1;"));
     }
 
     @Test
-    public void ShouldCompileScript_PipedToInputStream_AndPrintToOutputStream() throws IOException {
-        assertThat(piping("a = 1", argsArray), containsString("a = 1;"));
+    public void shouldWrapWhenNoArgs() {
+        assertThat(compilingByPiping("a = 1"), startsWith("(function() {"));
     }
 
     @Test
-    public void ShouldWrap_When_NoArgs() throws IOException {
-        assertThat(piping("a = 1", argsArray), startsWith("(function() {"));
+    public void shouldNotWrapWhenNoWrapArgsSupplied() throws IOException {
+        assertThat(compilingByPiping("a = 1", "--no-wrap"), not(startsWith("(function() {")));
     }
 
-    @Test
-    public void ShouldNotWrap_When_NoWrap_ArgsSupplied() throws IOException {
-        argsArray[0] = "--no-wrap";
-        assertThat(piping("a = 1", argsArray), not(startsWith("(function() {")));
-    }
-
-    private String piping(String input, String[] args) throws IOException {
+    private String compilingByPiping(String input, String... args) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(byteArrayOutputStream);
         new Main().execute(args, printStream, new ByteArrayInputStream(input.getBytes()));
