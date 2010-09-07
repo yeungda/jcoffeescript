@@ -24,15 +24,15 @@ import java.util.LinkedList;
 import java.util.Collection;
 
 public class Main {
+	private static final int BUFFER_SIZE = 262144;
+	private static final int BUFFER_OFFSET = 0;
 
-    public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
         new Main().execute(args, System.out, System.in);
     }
 
     public void execute(String[] args, PrintStream out, InputStream in) throws IOException {
-        final int BUFFER_OFFSET = 0;
-        final int BUFFER_SIZE = 262144;
-
+	    
         InputStreamReader streamReader = new InputStreamReader(in);
         try {
             StringBuilder builder = new StringBuilder(BUFFER_SIZE);
@@ -45,7 +45,7 @@ public class Main {
             
             Collection<Option> options = new LinkedList<Option>();
 
-            if (args.length == 1 && args[0].equals("NO_WRAP")) {
+            if (args.length == 1 && args[0].equals("--no-wrap")) {
                 options.add(Option.NO_WRAP);
             }
 
@@ -54,7 +54,6 @@ public class Main {
             
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
-            System.exit(1);
         } finally {
             streamReader.close();
         }
