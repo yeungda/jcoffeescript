@@ -16,28 +16,47 @@
 
 package org.jcoffeescript;
 
-import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
-
+import static org.hamcrest.CoreMatchers.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.StringContains.containsString;
 
 public class MainTest {
-    @Test
-    public void shouldCompileScriptsPipedToInputStreamAndPrintToOutputStream() throws IOException {
-        assertThat(piping("a = 1"), Matchers.containsString("a = 1"));
+
+    static String[] argsArray = new String[1];
+
+    @Before
+    public void setUp() {
+        argsArray[0] = "";
     }
 
-    private String piping(String input) throws IOException {
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        final PrintStream printStream = new PrintStream(byteArrayOutputStream);
-        new Main().execute(printStream, new ByteArrayInputStream(input.getBytes()));
+    @Test
+    public void ShouldCompileScript_PipedToInputStream_AndPrintToOutputStream() throws IOException {
+        assertThat(piping("a = 1", argsArray), containsString("a = 1;"));
+    }
+
+    @Test
+    public void ShouldWrap_When_NoArgs() throws IOException {
+        assertThat(piping("a = 1", argsArray), startsWith("(function() {"));
+    }
+
+    @Test
+    public void ShouldNotWrap_When_NoWrap_ArgsSupplied() throws IOException {
+        argsArray[0] = "--no-wrap";
+        assertThat(piping("a = 1", argsArray), not(startsWith("(function() {")));
+    }
+
+    private String piping(String input, String[] args) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(byteArrayOutputStream);
+        new Main().execute(args, printStream, new ByteArrayInputStream(input.getBytes()));
         printStream.close();
         return byteArrayOutputStream.toString();
     }
-
 }
