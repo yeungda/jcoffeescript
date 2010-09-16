@@ -13,6 +13,12 @@ from the command prompt:
 command prompt options:
     --no-wrap   Compile the JavaScript without the top-level function safety wrapper.
 
+command prompt on windows (input & output from files):
+    type foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
+
+on unix (as above):
+    cat foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
+
 from java:
     String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
 
