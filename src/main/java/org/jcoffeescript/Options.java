@@ -22,7 +22,7 @@ public class Options {
     private final String javaScriptOptions;
 
     public Options(Collection<Option> options) {
-        javaScriptOptions = String.format("{noWrap: %b}", options.contains(Option.NO_WRAP));
+        javaScriptOptions = String.format("{bare: %b}", options.contains(Option.BARE));
     }
 
     public String toJavaScript() {

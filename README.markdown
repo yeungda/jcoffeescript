@@ -1,6 +1,6 @@
 # JCoffeeScript
 
-JCoffeeScript is a java library that compiles CoffeeScript 0.9.2.  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
+JCoffeeScript is a java library that compiles CoffeeScript 0.9.4+ (commit a2d33112b8cf0d4428b9).  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
 
 ## Usage
 from the command prompt:
@@ -11,13 +11,13 @@ from the command prompt:
     })();
 
 command prompt options:
-    --no-wrap   Compile the JavaScript without the top-level function safety wrapper.
+    --bare      Compile the JavaScript without the top-level function safety wrapper.
 
 command prompt on windows (input & output from files):
-    type foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
+    type foo.coffee | java -jar  jcoffeescript.jar --bare > foo.js
 
 on unix (as above):
-    cat foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
+    cat foo.coffee | java -jar  jcoffeescript.jar --bare > foo.js
 
 from java:
     String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
