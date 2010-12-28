@@ -12,16 +12,15 @@ from the command prompt:
        })();
 </pre>
 
-___
 ####Command Line (unix/windows): 
 >    java -jar jcoffeescript-1.0.jar < foo.coffee > foo.js
-___
+
 ####command line options:  
 >    __--bare__   - compile the javascript without top-level function safety wrapper.  
-___
+
 ####From java:
 >    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
-___
+
 ####From jruby:
 <code>
 >     if "java" == RUBY_PLATFORM then
