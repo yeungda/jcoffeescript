@@ -63,8 +63,8 @@ public class Main {
     private Collection<Option> readOptionsFrom(String[] args) {
         final Collection<Option> options = new LinkedList<Option>();
 
-        if (args.length == 1 && args[0].equals("--no-wrap")) {
-            options.add(Option.NO_WRAP);
+        if (args.length == 1 && args[0].equals("--bare")) {
+            options.add(Option.BARE);
         }
         return options;
     }

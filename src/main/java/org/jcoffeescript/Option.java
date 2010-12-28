@@ -17,5 +17,5 @@
 package org.jcoffeescript;
 
 public enum Option {
-  NO_WRAP
+	BARE
 }

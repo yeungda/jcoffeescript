@@ -30,18 +30,18 @@ public class CoffeeScriptCompilerTest {
         assertThat(compiling("a = 1"),
                 allOf(
                         containsString("a = 1"),
-                        containsSafetyWrapper()
+                        containsFunctionWrapper()
                 )
         );
     }
 
     @Test
-    public void shouldCompileWithoutSafetyWrapper() throws JCoffeeScriptCompileException {
-        assertThat(compiling("a = 1", Option.NO_WRAP), not(containsSafetyWrapper()));
+    public void shouldCompileWithoutFunctionWrapper() throws JCoffeeScriptCompileException {
+        assertThat(compiling("a = 1", Option.BARE), not(containsFunctionWrapper()));
     }
 
-    private Matcher<String> containsSafetyWrapper() {
-        return allOf(startsWith("(function() {\n"), endsWith("\n})();\n"));
+    private Matcher<String> containsFunctionWrapper() {
+        return allOf(startsWith("(function() {\n"), endsWith("\n}).call(this);\n"));
     }
 
     private String compiling(String coffeeScriptSource, Option... options) throws JCoffeeScriptCompileException {

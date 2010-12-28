@@ -40,7 +40,7 @@ public class MainTest {
 
     @Test
     public void shouldNotWrapWhenNoWrapArgsSupplied() throws IOException {
-        assertThat(compilingByPiping("a = 1", "--no-wrap"), not(startsWith("(function() {")));
+        assertThat(compilingByPiping("a = 1", "--bare"), not(startsWith("(function() {")));
     }
 
     private String compilingByPiping(String input, String... args) {
