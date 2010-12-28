@@ -1,37 +1,36 @@
 # JCoffeeScript
 
-JCoffeeScript is a java library that compiles CoffeeScript 0.9.2.  JCoffeeScript is licensed under the Apache license 2.0.  Please see LICENSE for more detail.
+JCoffeeScript is a java library that compiles CoffeeScript 1.0.
 
-## Usage
+### Usage
 from the command prompt:
-    prompt> echo "a = 1" | java -jar jcoffeescript.jar
-    (function(){
-      var a;
-      a = 1;
-    })();
+>    echo "a = 1" | java -jar jcoffeescript-1.0.jar
+<pre>
+      (function() {
+          var a;
+          a = 1;
+       })();
+</pre>
 
-command prompt options:
-    --no-wrap   Compile the JavaScript without the top-level function safety wrapper.
-
-command prompt on windows (input & output from files):
-    type foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
-
-on unix (as above):
-    cat foo.coffee | java -jar  jcoffeescript.jar --no-wrap > foo.js
-
-from java:
-    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
-
-from jruby:
-    if "java" == RUBY_PLATFORM then
-        # use jcoffeescript implementation
-        require 'java'
-        class CoffeeScriptCompiler
-
+___
+####Command Line (unix/windows): 
+>    java -jar jcoffeescript-1.0.jar < foo.coffee > foo.js
+___
+####command line options:  
+>    __--bare__   - compile the javascript without top-level function safety wrapper.  
+___
+####From java:
+>    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
+___
+####From jruby:
+<code>
+>     if "java" == RUBY_PLATFORM then
+       # use jcoffeescript implementation
+       require 'java'
+       class CoffeeScriptCompiler
             def initialize
                 @compiler = org.jcoffeescript.JCoffeeScriptCompiler.new
             end
-
             def compile(source)
                 @compiler.compile(source)
             end
@@ -51,14 +50,10 @@ from jruby:
     end
     compiler = CoffeeScriptCompiler.new
     compiler.compile('a = 1')
-
-## Finally
-Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.
-
-Thanks to Raphael Speyer for helping with the design.
-
-Thanks to Daniel Cassidy for putting a lot of work into the code.
-
-Thanks to PandaWood for helping with the code.
-
-Home Page: http://yeungda.github.com/jcoffeescript
+</code>
+#### Thanks
+Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.    
+Thanks to Raphael Speyer for helping with the design.  
+Thanks to Daniel Cassidy for putting a lot of work into the code.  
+Thanks to PandaWood for helping with the code.  
+[JCoffeeScript Homepage](http://yeungda.github.com/jcoffeescript)
