@@ -37,11 +37,11 @@ public class CoffeeScriptCompilerTest {
 
     @Test
     public void shouldCompileWithoutSafetyWrapper() throws JCoffeeScriptCompileException {
-        assertThat(compiling("a = 1", Option.NO_WRAP), not(containsSafetyWrapper()));
+        assertThat(compiling("a = 1", Option.BARE), not(containsSafetyWrapper()));
     }
 
     private Matcher<String> containsSafetyWrapper() {
-        return allOf(startsWith("(function() {\n"), endsWith("\n})();\n"));
+        return allOf(startsWith("(function() {\n"), endsWith("\n}).call(this);\n"));
     }
 
     private String compiling(String coffeeScriptSource, Option... options) throws JCoffeeScriptCompileException {
