@@ -54,5 +54,5 @@ from the command prompt:
 Thanks to Jeremy Ashkenas and all contributors to the coffeescript project.    
 Thanks to Raphael Speyer for helping with the design.  
 Thanks to Daniel Cassidy for putting a lot of work into the code.  
-Thanks to PandaWood for helping with the code.  
+Thanks to PandaWood for maintaining the code.  
 [JCoffeeScript Homepage](http://yeungda.github.com/jcoffeescript)
