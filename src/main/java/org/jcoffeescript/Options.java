@@ -16,16 +16,45 @@
 
 package org.jcoffeescript;
 
+import java.util.LinkedList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Options {
-    private final String javaScriptOptions;
+    private Collection<String> javascriptOptions = new LinkedList<String>();
+    public String coffeescriptLibrary = null;
 
-    public Options(Collection<Option> options) {
-        javaScriptOptions = String.format("{bare: %b}", options.contains(Option.BARE));
+    public Options( String[] args ) throws JCoffeeScriptCompileException {
+        // Set the options that we know about as members of the Options class.
+        // Assume all other options are meant for coffeescript.
+        for( int i = 0; i < args.length; i++ ){
+            if ( args[i].equals("--coffeescriptjs") ) {
+                if ( i == args.length - 1 ) {
+                    throw new JCoffeeScriptCompileException(
+                        "--coffeescriptjs requires an argument.");
+                }
+                coffeescriptLibrary = args[++i];
+            } else if ( args[i].indexOf("--") == 0 ) {
+                javascriptOptions.add( args[i].substring(2) );
+            }
+        }
     }
 
     public String toJavaScript() {
-        return javaScriptOptions;
+        String json = "{";
+        int count = 0;
+        Iterator<String> iter = javascriptOptions.iterator();
+
+        while( iter.hasNext() ) {
+            String arg = iter.next();
+
+            if ( count++ > 0 ) {
+                json += ", " + arg + ": true";
+            } else {
+                json += arg + ": true";
+            }
+        }
+
+        return json + "}";
     }
 }

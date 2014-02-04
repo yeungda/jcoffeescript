@@ -24,4 +24,7 @@ public class JCoffeeScriptCompileException extends Exception {
         super(e.getValue().toString(), e);
     }
 
+    JCoffeeScriptCompileException (String message) {
+        super(message);
+    }
 }

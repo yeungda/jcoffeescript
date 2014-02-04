@@ -32,8 +32,8 @@ public class Main {
     }
 
     public void execute(String[] args, PrintStream out, InputStream in) {
-        final Collection<Option> options = readOptionsFrom(args);
         try {
+            Options options = new Options(args);
             out.print(new JCoffeeScriptCompiler(options).compile(readSourceFrom(in)));
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
@@ -60,12 +60,4 @@ public class Main {
         }
     }
 
-    private Collection<Option> readOptionsFrom(String[] args) {
-        final Collection<Option> options = new LinkedList<Option>();
-
-        if (args.length == 1 && args[0].equals("--bare")) {
-            options.add(Option.BARE);
-        }
-        return options;
-    }
 }

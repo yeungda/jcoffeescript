@@ -37,14 +37,14 @@ public class CoffeeScriptCompilerTest {
 
     @Test
     public void shouldCompileWithoutFunctionWrapper() throws JCoffeeScriptCompileException {
-        assertThat(compiling("a = 1", Option.BARE), not(containsFunctionWrapper()));
+        assertThat(compiling("a = 1", "--bare"), not(containsFunctionWrapper()));
     }
 
     private Matcher<String> containsFunctionWrapper() {
         return allOf(startsWith("(function() {\n"), endsWith("\n}).call(this);\n"));
     }
 
-    private String compiling(String coffeeScriptSource, Option... options) throws JCoffeeScriptCompileException {
-        return new JCoffeeScriptCompiler(Arrays.asList(options)).compile(coffeeScriptSource);
+    private String compiling(String coffeeScriptSource, String... options) throws JCoffeeScriptCompileException {
+        return new JCoffeeScriptCompiler(options).compile(coffeeScriptSource);
     }
 }

@@ -3,3 +3,4 @@ target
 out
 .idea/workspace.xml
 s101plugin.state
+.*.sw?

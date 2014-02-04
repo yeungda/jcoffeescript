@@ -22,6 +22,9 @@ import org.mozilla.javascript.Scriptable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
@@ -33,13 +36,34 @@ public class JCoffeeScriptCompiler {
     private final Scriptable globalScope;
     private final Options options;
 
-	 public JCoffeeScriptCompiler() {
-        this(Collections.<Option>emptyList());
+	 public JCoffeeScriptCompiler() throws JCoffeeScriptCompileException {
+        this(new Options( new String[0] ) );
     }
 
-	public JCoffeeScriptCompiler(Collection<Option> options) {
+	 public JCoffeeScriptCompiler( String[] args ) throws JCoffeeScriptCompileException {
+        this(new Options( args ) );
+    }
+
+	public JCoffeeScriptCompiler(Options options) throws
+        JCoffeeScriptCompileException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("org/jcoffeescript/coffee-script.js");
+        InputStream inputStream;
+
+        if ( options.coffeescriptLibrary != null ) {
+            try {
+                // Use the specified coffeescript.js file
+                inputStream = new FileInputStream( new File(
+                    options.coffeescriptLibrary ) );
+             } catch (java.io.FileNotFoundException e) {
+                throw new JCoffeeScriptCompileException( 
+                    "Error opening coffeescript library: " + e.getMessage() );
+             }
+        
+        } else {
+            // Use the built-in coffeescript.
+            inputStream = classLoader.getResourceAsStream("org/jcoffeescript/coffee-script.js");
+        }
+
         try {
             try {
                 Reader reader = new InputStreamReader(inputStream, "UTF-8");
@@ -64,7 +88,7 @@ public class JCoffeeScriptCompiler {
             throw new Error(e); // This should never happen
         }
 
-        this.options = new Options(options);
+        this.options = options;
     }
 
 	public String compile (String coffeeScriptSource) throws JCoffeeScriptCompileException {
