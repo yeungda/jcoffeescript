@@ -28,9 +28,15 @@
     <import file="${basedir}/conf/build/build-jar.xml"/>
 
     <target name="dependencies">
-        <path id="compile.classpath">
+        <path id="inline.classpath">
             <fileset dir="${basedir}/lib">
                 <include name="js.jar"/>
+            </fileset>
+        </path>
+        <path id="compile.classpath">
+            <path refid="inline.classpath"/>
+            <fileset dir="${basedir}/lib">
+                <include name="servlet-api-2.5.jar"/>
             </fileset>
         </path>
         <path id="runtime.classpath">
@@ -44,6 +50,11 @@
             <fileset dir="${basedir}/lib">
                 <include name="hamcrest-all-1.3RC0.jar"/>
                 <include name="junit-dep-4.8.2.jar"/>
+                <include name="commons-httpclient-3.1.jar"/>
+                <include name="commons-codec-1.4.jar"/>
+                <include name="commons-logging-1.1.1.jar"/>
+                <include name="jetty-*.jar"/>
+
             </fileset>
         </path>
     </target>

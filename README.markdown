@@ -18,6 +18,26 @@ from the command prompt:
 ####command line options:  
 >    __--bare__   - compile the javascript without top-level function safety wrapper.  
 
+####In a Web Application:
+Add the following filter in your web.xml:
+
+<pre>
+	&lt;filter&gt;
+		&lt;filter-name&gt;jcoffeescript&lt;/filter-name&gt;
+		&lt;filter-class&gt;org.jcoffeescript.web.CoffeeScriptFilter&lt;/filter-class&gt;
+	&lt;/filter&gt;
+	&lt;filter-mapping&gt;
+		&lt;filter-name&gt;jcoffeescript&lt;/filter-name&gt;
+		&lt;url-pattern&gt;*.js&lt;/url-pattern&gt;
+	&lt;/filter-mapping&gt;
+</pre>
+
+Write your CoffeeScript files inside:
+> /WEB-INF/coffee
+
+and access from the server using the following URL:
+> http://&lt;your host&gt;/&lt;your context&gt;/js/&lt;coffeescript file name&gt;.js
+
 ####From java:
 >    String javascript = new org.jcoffeescript.JCoffeeScriptCompiler().compile("a = 1");
 

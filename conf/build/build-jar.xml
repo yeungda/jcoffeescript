@@ -19,7 +19,7 @@
 <project>
     <target name="jar" depends="test">
         <mkdir dir="${basedir}/target/dist"/>
-        <pathtofileset name="jars" pathrefid="compile.classpath" dir="${basedir}/lib"/>
+        <pathtofileset name="jars" pathrefid="inline.classpath" dir="${basedir}/lib"/>
         
         <jar destfile="${basedir}/target/dist/${artifact.name}.jar">
             <manifest><attribute name="Main-Class" value="org.jcoffeescript.Main"/></manifest>
