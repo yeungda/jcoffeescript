@@ -31,7 +31,7 @@ import java.util.Collections;
 public class JCoffeeScriptCompiler {
 
     private final Scriptable globalScope;
-    private final Options options;
+    private Options options;
 
 	 public JCoffeeScriptCompiler() {
         this(Collections.<Option>emptyList());
@@ -64,6 +64,10 @@ public class JCoffeeScriptCompiler {
             throw new Error(e); // This should never happen
         }
 
+        this.options = new Options(options);
+    }
+
+    public void setOptions(Collection<Option> options) {
         this.options = new Options(options);
     }
 
