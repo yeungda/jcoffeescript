@@ -37,6 +37,7 @@ public class Main {
             out.print(new JCoffeeScriptCompiler(options).compile(readSourceFrom(in)));
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
+            System.exit(1);
         }
     }
 
