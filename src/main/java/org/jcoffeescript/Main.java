@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.Collection;
-import java.util.LinkedList;
 
 public class Main {
     private static final int BUFFER_SIZE = 262144;
@@ -32,9 +30,9 @@ public class Main {
     }
 
     public void execute(String[] args, PrintStream out, InputStream in) {
-        final Collection<Option> options = readOptionsFrom(args);
+        final Boolean bare = readIsBareFrom(args);
         try {
-            out.print(new JCoffeeScriptCompiler(options).compile(readSourceFrom(in)));
+            out.print(new JCoffeeScriptCompiler().compile(readSourceFrom(in), bare));
         } catch (JCoffeeScriptCompileException e) {
             System.err.println(e.getMessage());
         }
@@ -60,12 +58,7 @@ public class Main {
         }
     }
 
-    private Collection<Option> readOptionsFrom(String[] args) {
-        final Collection<Option> options = new LinkedList<Option>();
-
-        if (args.length == 1 && args[0].equals("--bare")) {
-            options.add(Option.BARE);
-        }
-        return options;
+    private boolean readIsBareFrom(String[] args) {
+        return args.length == 1 && args[0].equals("--bare");
     }
 }

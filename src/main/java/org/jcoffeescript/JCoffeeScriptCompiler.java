@@ -25,19 +25,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.Collections;
 
 public class JCoffeeScriptCompiler {
 
     private final Scriptable globalScope;
-    private final Options options;
 
-	 public JCoffeeScriptCompiler() {
-        this(Collections.<Option>emptyList());
-    }
-
-	public JCoffeeScriptCompiler(Collection<Option> options) {
+	public JCoffeeScriptCompiler() {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("org/jcoffeescript/coffee-script.js");
         try {
@@ -63,18 +56,16 @@ public class JCoffeeScriptCompiler {
         } catch (IOException e) {
             throw new Error(e); // This should never happen
         }
-
-        this.options = new Options(options);
     }
 
-	public String compile (String coffeeScriptSource) throws JCoffeeScriptCompileException {
+	public String compile (String coffeeScriptSource, Boolean bare) throws JCoffeeScriptCompileException {
         Context context = Context.enter();
         try {
             Scriptable compileScope = context.newObject(globalScope);
             compileScope.setParentScope(globalScope);
             compileScope.put("coffeeScriptSource", compileScope, coffeeScriptSource);
             try {
-                return (String)context.evaluateString(compileScope, String.format("CoffeeScript.compile(coffeeScriptSource, %s);", options.toJavaScript()),
+                return (String)context.evaluateString(compileScope, String.format("CoffeeScript.compile(coffeeScriptSource, {bare: %b});", bare),
                         "JCoffeeScriptCompiler", 0, null);
             } catch (JavaScriptException e) {
                 throw new JCoffeeScriptCompileException(e);
@@ -83,6 +74,4 @@ public class JCoffeeScriptCompiler {
             Context.exit();
         }
     }
-
-
 }

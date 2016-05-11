@@ -20,7 +20,7 @@
 
     <target name="build" depends="bootstrap, clean, functional-test"/>
 
-    <property name="artifact.name" value="jcoffeescript-1.1"/>
+    <property name="artifact.name" value="jcoffeescript-1.3.3"/>
     <import file="${basedir}/conf/build/build-bootstrap.xml"/>
     <import file="${basedir}/conf/build/build-clean.xml"/>
     <import file="${basedir}/conf/build/build-compile.xml"/>
